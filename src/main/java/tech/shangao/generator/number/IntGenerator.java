@@ -3,13 +3,12 @@ package tech.shangao.generator.number;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.Random;
 
 public class IntGenerator {
     private static final Logger log = LoggerFactory.getLogger(IntGenerator.class);
 
-    private static Random random = new Random();
+    private static Random random = new Random(Double.doubleToLongBits(Math.random()));
 
     /**
      * get a pseudo random int
@@ -17,7 +16,6 @@ public class IntGenerator {
      * @return pseudo random int
      */
     public static int random() {
-        seed();
         return random.nextInt();
     }
 
@@ -28,7 +26,6 @@ public class IntGenerator {
      * @return random int
      */
     public static int random(int bound) {
-        seed();
         return random.nextInt(bound);
     }
 
@@ -40,18 +37,11 @@ public class IntGenerator {
      * @return random int
      */
     public static int random(int origin, int bound) {
-        seed();
-
-        return origin + random.nextInt(bound);
+        return origin + random.nextInt(bound - origin);
     }
-
-    private static void seed() {
-        random.setSeed(new Date().getTime());
-    }
-
 
     public static void main(String[] args) {
-
+        log.debug("{}", Double.doubleToLongBits(Math.random()));
         log.debug("{}", Integer.MAX_VALUE - 1 + Integer.MAX_VALUE);
         log.debug("{}", random(Integer.MAX_VALUE - 1, Integer.MAX_VALUE));
     }
